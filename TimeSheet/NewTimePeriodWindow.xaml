@@ -1,0 +1,24 @@
+﻿<Window x:Class="TimeSheet.NewTimePeriodWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add new time period" Height="125" Width="200">
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <Label Grid.Row="0">New time period</Label>
+        <StackPanel Grid.Row="1" Margin="0,5,0,5" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBox Name="StartTimeHourTB" TextWrapping="Wrap" PreviewTextInput="PreviewTextInput"></TextBox>
+            <TextBlock Text=" : "></TextBlock>
+            <TextBox Name="StartTimeMinuteTB" TextWrapping="Wrap" PreviewTextInput="PreviewTextInput"></TextBox>
+            <TextBlock Text="  -  "></TextBlock>
+            <TextBox Name="EndTimeHourTB" TextWrapping="Wrap" PreviewTextInput="PreviewTextInput"></TextBox>
+            <TextBlock Text=" : "></TextBlock>
+            <TextBox Name="EndTimeMinuteTB" TextWrapping="Wrap" PreviewTextInput="PreviewTextInput"></TextBox>
+        </StackPanel>
+        <Button Grid.Row="2" Name="AddNewTimePeriodButton" Click="AddNewTimePeriodButton_OnClick">Add</Button>
+    </Grid>
+</Window>

@@ -1,13 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using TimeSheet.Model;
 
 namespace TimeSheet.Database.Entities
 {
-    public class DayEntity : Day
+    public class DayEntity
     {
         public int Id { get; set; }
-        [Column("TimePeriods")]
-        public new DbSet<TimePeriodEntity> TimePeriods { get; set; } 
+
+        public DateTime Date { get; set; }
+
+        [Column("WorkTimePeriods")]
+        public new DbSet<TimePeriodEntity> WorkTimePeriods { get; set; }
+
+        [Column("BreakTimePeriods")]
+        public new DbSet<TimePeriodEntity> BreakTimePeriods { get; set; }
     }
 }

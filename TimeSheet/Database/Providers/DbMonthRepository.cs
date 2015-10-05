@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Documents;
 using TimeSheet.Database.DAL;
-using TimeSheet.Database.Entities;
 using TimeSheet.Model;
+using TimeSheet.Utils.Mappers;
 
 namespace TimeSheet.Database.Providers
 {
-    public static class DbMonthProvider
+    public class DbMonthRepository : IMonthRepository
     {
-        public static IEnumerable<Month> GetAll()
+        public IEnumerable<Month> GetAll()
         {
             //using (var context = new TimeSheetContext())
             //{
@@ -18,26 +18,25 @@ namespace TimeSheet.Database.Providers
             //}
             return new List<Month>
             {
-                new Month
+                new Month("October 2015")
                 {
-                    MonthName = "October 2015",
-                    Days = new List<Day>
+                    Days = new ObservableCollection<Day>
                     {
-                        new Day
+                        new Day(DateTime.Today)
                         {
-                            Date = DateTime.Today,
-                            TimePeriods = new List<TimePeriod>
+                            WorkTimePeriods = new ObservableCollection<TimePeriod>
                             {
                                 new TimePeriod { StartTime = DateTime.Now - TimeSpan.FromHours(5), EndTime = DateTime.Now },
                                 new TimePeriod { StartTime = DateTime.Now - TimeSpan.FromHours(5), EndTime = DateTime.Now }
-                            }
+                            },
+                            BreakTimePeriods = new ObservableCollection<TimePeriod>()
                         }
                     }
                 }
             };
         }
 
-        public static Month GetByName(string monthName)
+        public Month GetByName(string monthName)
         {
             using (var context = new TimeSheetContext())
             {
@@ -46,17 +45,13 @@ namespace TimeSheet.Database.Providers
                 {
                     throw new KeyNotFoundException("No such month exists.");
                 }
-                return month;
+                return EntityToModel.Map(month);
             }
         }
 
-        private static Month EntityToModel(MonthEntity entity)
+        public void Save(IEnumerable<Month> months)
         {
-            return new Month
-            {
-                MonthName = entity.MonthName,
-                Days = entity.Days
-            };
+            throw new NotImplementedException();
         }
     }
 }
