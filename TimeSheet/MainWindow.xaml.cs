@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using TimeSheet.Database.Providers;
 using TimeSheet.DataItems;
 using TimeSheet.Model;
-using TimeSheet.Utils;
 using TimeSheet.ViewModel;
 
 namespace TimeSheet
@@ -52,7 +49,7 @@ namespace TimeSheet
             var monthlyMinutesWorked = _selectedMonth.GetMinutesWorkedCount();
             MonthlySummaryListBox.ItemsSource = new List<KeyValueItem>
             {
-                new KeyValueItem { Key = "Total hours worked monthly",  Value = string.Format("{0}h {1}m", monthlyMinutesWorked/60, monthlyMinutesWorked%60) },
+                new KeyValueItem { Key = "Total hours worked monthly",  Value = string.Format("{0}h {1}m", (int)monthlyMinutesWorked/60, monthlyMinutesWorked%60) },
                 new KeyValueItem { Key = "Estimated salary", Value = string.Format("{0:F} PLN", CalculateEstimatedSalary(monthlyMinutesWorked)) }
             };
         }
@@ -65,7 +62,7 @@ namespace TimeSheet
                 new KeyValueItem
                 {
                     Key = "Total hours worked daily",
-                    Value = string.Format("{0}h {1}m", dailyMinutesWorked/60, dailyMinutesWorked%60)
+                    Value = string.Format("{0}h {1}m", (int)dailyMinutesWorked/60, dailyMinutesWorked%60)
                 }
             };
         }
@@ -172,12 +169,12 @@ namespace TimeSheet
         private double CalculateEstimatedSalary(double totalMinutesWorked)
         {
             var hourlyWage = 18.0;
-            var hours = totalMinutesWorked / 60;
+            var hours = (int)totalMinutesWorked / 60;
             var minutes = totalMinutesWorked % 60;
             if (minutes >= 15)
-                hours += 1.0;
+                hours += 1;
 
-            return Math.Max(hours * hourlyWage * 0.8518 - 10.0, 0);
+            return Math.Max(hours * hourlyWage * 0.8515 - 10.0, 0);
         }
 
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
