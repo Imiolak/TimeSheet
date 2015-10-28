@@ -41,7 +41,7 @@
             
             <Grid Grid.Column="0" Margin="0,0,0,0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
 
@@ -50,7 +50,10 @@
                     <ListBox Name="MonthlyDatesListBox" SelectionChanged="MonthlyDatesListBox_OnSelectionChanged" Margin="0,0,0,5">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding ShortDate}"></TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding ShortDate}"></TextBlock>
+                                    <Button Content="X" Margin="5,0,0,0" Click="DeleteDay"></Button>
+                                </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -75,7 +78,10 @@
                     <ListBox Name="DailyWorkTimePeriodsListBox" Margin="0,0,0,5">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Formatted}"></TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Formatted}"></TextBlock>
+                                    <Button Content="X" Margin="5,0,0,0" Click="DeleteWorkTimePeriod"></Button>
+                                </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -86,7 +92,10 @@
                     <ListBox Name="DailyBreakTimePeriodsListBox" Margin="0,0,0,5">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Formatted}"></TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Formatted}"></TextBlock>
+                                    <Button Content="X" Margin="5,0,0,0" Click="DeleteBreakTimePeriod"></Button>
+                                </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>

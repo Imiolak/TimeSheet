@@ -40,8 +40,12 @@ namespace TimeSheet
 
         private void RefreshSummaries()
         {
+            if (_selectedMonth == null)
+                return;
+
             RefreshMonthlySummary();
-            RefreshDailySummary();
+            if (_selectedDay != null)
+                RefreshDailySummary();
         }
 
         private void RefreshMonthlySummary()
@@ -161,6 +165,33 @@ namespace TimeSheet
             {
                 _selectedDay.BreakTimePeriods.Add(newTimePeriodWindow.SelectedTimePeriod);
             }
+
+            RefreshSummaries();
+        }
+
+        private void DeleteDay(object sender, RoutedEventArgs e)
+        {
+            var button = (Button) sender;
+            var day = (Day) button.DataContext;
+            _selectedMonth.Days.Remove(day);
+
+            RefreshSummaries();
+        }
+
+        private void DeleteWorkTimePeriod(object sender, RoutedEventArgs e)
+        {
+            var button = (Button) sender;
+            var timePeriod = (TimePeriod) button.DataContext;
+            _selectedDay.WorkTimePeriods.Remove(timePeriod);
+
+            RefreshSummaries();
+        }
+
+        private void DeleteBreakTimePeriod(object sender, RoutedEventArgs e)
+        {
+            var button = (Button)sender;
+            var timePeriod = (TimePeriod)button.DataContext;
+            _selectedDay.BreakTimePeriods.Remove(timePeriod);
 
             RefreshSummaries();
         }
