@@ -50,7 +50,7 @@ namespace TimeSheet
 
         private void RefreshMonthlySummary()
         {
-            var monthlyMinutesWorked = _selectedMonth.GetMinutesWorkedCount();
+            var monthlyMinutesWorked = _selectedMonth.MinutesWorked;
             MonthlySummaryListBox.ItemsSource = new List<KeyValueItem>
             {
                 new KeyValueItem { Key = "Total hours worked monthly",  Value = string.Format("{0}h {1}m", (int)monthlyMinutesWorked/60, monthlyMinutesWorked%60) },
@@ -61,12 +61,19 @@ namespace TimeSheet
         private void RefreshDailySummary()
         {
             var dailyMinutesWorked = _selectedDay.MinutesWorked;
+            var weeklyMinutesWorked = _selectedMonth.GetMinutesWorkedWeekly(_selectedDay);
+
             DailySummaryListBox.ItemsSource = new List<KeyValueItem>
             {
                 new KeyValueItem
                 {
                     Key = "Total hours worked daily",
                     Value = string.Format("{0}h {1}m", (int)dailyMinutesWorked/60, dailyMinutesWorked%60)
+                },
+                new KeyValueItem
+                {
+                    Key = "Total hours worked weekly",
+                    Value = string.Format("{0}h {1}m", (int)weeklyMinutesWorked/60, weeklyMinutesWorked%60)
                 }
             };
         }
