@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using TimeSheet.Utils.Extensions;
 
@@ -37,6 +38,18 @@ namespace TimeSheet.Model
                     (day.Date - anyDayOfTheWeek.Date).Days >= lowerLimit &&
                     (day.Date - anyDayOfTheWeek.Date).Days <= upperLimit)
                 .Sum(day => day.MinutesWorked);
+        }
+
+        public void ExportToFile()
+        {
+            var file = new StreamWriter(string.Format("{0}.txt", MonthName));
+
+            foreach (var day in Days)
+            {
+                file.WriteLine(string.Format("{0}\t{1}", day.ShortDate, day.MinutesWorked/60));
+            }
+
+            file.Close();
         }
     }
 }

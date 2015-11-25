@@ -120,6 +120,14 @@ namespace TimeSheet
         #endregion
 
         #region Buttons
+        private void ExportMonth_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_selectedMonth == null)
+                return;
+
+            _selectedMonth.ExportToFile();
+        }
+
         private void AddNewMonthButon_OnClick(object sender, RoutedEventArgs e)
         {
             var newMonthWindow = new NewMonthWindow();
@@ -218,6 +226,6 @@ namespace TimeSheet
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
             _monthRepository.Save(_mainViewModel.Months);
-        }
+        } 
     }
 }
