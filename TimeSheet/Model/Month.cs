@@ -10,13 +10,17 @@ namespace TimeSheet.Model
     [Serializable]
     public class Month
     {
+        private const int DefaultHourlyRate = 24;
+
         public Month(string monthName)
         {
             MonthName = monthName;
+            HourlyWage = DefaultHourlyRate;
             Days = new ObservableCollection<Day>();
         }
 
         public string MonthName { get; set; }
+        public int HourlyWage { get; set; }
         public ICollection<Day> Days { get; set; }
 
         public double MinutesWorked
@@ -46,7 +50,8 @@ namespace TimeSheet.Model
 
             foreach (var day in Days)
             {
-                file.WriteLine(string.Format("{0}\t{1}", day.ShortDate, day.MinutesWorked/60));
+                var hoursWorked = day.MinutesWorked/60;
+                file.WriteLine($"{day.ShortDate}\t{hoursWorked}");
             }
 
             file.Close();

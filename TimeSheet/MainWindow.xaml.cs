@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using TimeSheet.Database.Providers;
@@ -53,8 +54,22 @@ namespace TimeSheet
             var monthlyMinutesWorked = _selectedMonth.MinutesWorked;
             MonthlySummaryListBox.ItemsSource = new List<KeyValueItem>
             {
-                new KeyValueItem { Key = "Total hours worked monthly",  Value = string.Format("{0}h {1}m", (int)monthlyMinutesWorked/60, monthlyMinutesWorked%60) },
-                new KeyValueItem { Key = "Estimated salary", Value = string.Format("{0:F} PLN", CalculateEstimatedSalary(monthlyMinutesWorked)) }
+                new KeyValueItem
+                {
+                    Key = "Total hours worked monthly",  
+                    Value = string.Format("{0}h {1}m", (int)monthlyMinutesWorked/60, monthlyMinutesWorked%60)
+                },
+                new KeyValueItem
+                {
+                    Key = "Hourly wage",
+                    Value = _selectedMonth.HourlyWage.ToString(),
+                    Editable = true
+                },
+                new KeyValueItem
+                {
+                    Key = "Estimated salary", 
+                    Value = string.Format("{0:F} PLN", CalculateEstimatedSalary(monthlyMinutesWorked))
+                }
             };
         }
 
@@ -138,7 +153,25 @@ namespace TimeSheet
                 {
                     Days = new ObservableCollection<Day>()
                 });
+                
+                SetLastMonthAsCurrent();
             }
+        }
+
+        private void DeleteMonth_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_selectedMonth == null)
+                return;
+
+            _mainViewModel.Months.Remove(_selectedMonth);
+            SetLastMonthAsCurrent();
+        }
+
+        private void SetLastMonthAsCurrent()
+        {
+            MonthsComboBox.SelectedItem = MonthsComboBox.Items.GetItemAt(MonthsComboBox.Items.Count - 1);
+            _selectedMonth = _mainViewModel.Months.LastOrDefault();
+            MonthChanged();
         }
 
         private void NewDayButton_OnClick(object sender, RoutedEventArgs e)
@@ -214,18 +247,27 @@ namespace TimeSheet
 
         private double CalculateEstimatedSalary(double totalMinutesWorked)
         {
-            var hourlyWage = 18.0;
-            var hours = (int)totalMinutesWorked / 60;
-            var minutes = totalMinutesWorked % 60;
-            if (minutes >= 15)
-                hours += 1;
+            var hours = totalMinutesWorked / 60;
 
-            return Math.Max(hours * hourlyWage * 0.8515 - 10.0, 0);
+            return Math.Max(hours * _selectedMonth.HourlyWage * 0.8536 - 10.0, 0);
         }
 
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
             _monthRepository.Save(_mainViewModel.Months);
-        } 
+        }
+
+        private void HourlyWageChanged(object sender, RoutedEventArgs e)
+        {
+            var newHourlyWage = int.Parse(((TextBox) sender).Text);
+
+            if (newHourlyWage != _selectedMonth.HourlyWage)
+                _selectedMonth.HourlyWage = newHourlyWage;
+
+
+            RefreshMonthlySummary();
+        }
+
+        
     }
 }

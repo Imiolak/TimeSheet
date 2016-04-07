@@ -24,11 +24,13 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
                 <ComboBox Grid.Column="0" Name="MonthsComboBox" ItemsSource="{Binding Months}" DisplayMemberPath="MonthName" SelectionChanged="MonthsComboBox_OnSelectionChanged" Margin="0,0,5,0"></ComboBox>
-                <Button Grid.Column="1" Name="ExportMonth" Click="ExportMonth_OnClick" Margin="5,0,5,0">Export</Button>
-                <Button Grid.Column="2" Name="AddNewMonthButon" Click="AddNewMonthButon_OnClick" Margin="5,0,0,0">New</Button>
+                <Button Grid.Column="1" Name="AddNewMonthButon" Click="AddNewMonthButon_OnClick" Margin="5,0,5,0">New</Button>
+                <Button Grid.Column="2" Name="ExportMonth" Click="ExportMonth_OnClick" Margin="5,0,5,0">Export</Button>
+                <Button Grid.Column="3" Name="DeleteMonth" Click="DeleteMonth_OnClick" Margin="5,0,0,0">Delete</Button>
             </Grid>
         </StackPanel>
         
@@ -133,7 +135,7 @@
                         </Grid.ColumnDefinitions>
                         
                         <TextBlock Grid.Column="0" Text="{Binding Key}" Margin="5,0,5,0" ></TextBlock>
-                        <TextBlock Grid.Column="1" Text="{Binding Value}" Margin="5,0,5,0"></TextBlock>
+                        <TextBox Grid.Column="1" Text="{Binding Value}" LostFocus="HourlyWageChanged" IsEnabled="{Binding Editable}" Margin="5,0,5,0"></TextBox>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
